@@ -2,7 +2,7 @@
 <%@ page import="ru.rosbank.javaschool.web.constant.Constants" %>
 <%@ page import="ru.rosbank.javaschool.web.model.ProductModel" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%-- ! + Tab - emmet --%>
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -20,8 +20,7 @@
 
 
     <% for (ProductModel item : (List<ProductModel>) request.getAttribute(Constants.ITEMS)) { %>
-    <div class="card" style="width: 18rem; float: left;">
-        <img src="..." class="card-img-top" alt="...">
+    <div class="card border border-primary" style="width: 18rem; float: left; margin-right: 5px; margin-bottom: 5px;">
         <div class="card-body">
             <h5 class="card-title"><%= item.getName() %>
             </h5>
@@ -31,6 +30,8 @@
                 <li class="list-group-item">Quantity: <%= item.getQuantity() %>
                 </li>
                 <li class="list-group-item">Category: <%= item.getCategory() %>
+                </li>
+                <li class="list-group-item">Description: <%= item.getDescription() %>
                 </li>
 
             </ul>
@@ -44,9 +45,7 @@
     <form action="<%= request.getContextPath() %>/admin" method="post">
         <input name="id" type="hidden" value="0">
         <div class="form group">
-            <%-- for="id", id должен быть у input --%>
             <label for="name">Product Name</label>
-            <%-- name="key" - потом по этому ключу можно будет доставать данные из запроса --%>
             <input type="text" id="name" name="name">
         </div>
         <div class="form group">
@@ -59,12 +58,16 @@
         </div>
         <div class="form group">
             <label for="category">Product Category</label>
-            <select name="category">
+            <select name="category" style="margin-top: 2px;">
                 <option value="<%=Constants.BURGERS%>">burgers</option>
                 <option value="<%=Constants.DRINKS%>">drinks</option>
                 <option value="<%=Constants.DESSERTS%>">desserts</option>
                 <option value="<%=Constants.POTATO%>">potato</option>
             </select>
+        </div>
+        <div class="form group">
+            <label for="description">Product Description</label>
+            <input type="text" id="description" name="description">
         </div>
 
         <button class="btn btn-primary">Add</button>
@@ -76,9 +79,7 @@
     <form action="<%= request.getContextPath() %>/admin" method="post">
         <input name="id" type="hidden" value="<%= item.getId() %>">
         <div class="form group">
-            <%-- for="id", id должен быть у input --%>
             <label for="name">Product Name</label>
-            <%-- name="key" - потом по этому ключу можно будет доставать данные из запроса --%>
             <input type="text" id="name" name="name" value="<%= item.getName() %>">
         </div>
         <div class="form group">
@@ -98,10 +99,13 @@
                 <option value="<%=Constants.POTATO%>">potato</option>
             </select>
         </div>
+        <div class="form group">
+            <label for="description">Product Category</label>
+            <input type="text" id="description" name="description" value="<%=item.getDescription()%>">
+        </div>
 
 
         <button class="btn btn-primary">Save</button>
-
 
 
     </form>

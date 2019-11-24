@@ -15,4 +15,5 @@ public interface OrderPositionRepository {
     void removeById(int id);
 
   List<OrderPositionModel> getAllByOrderId(int orderId);
+
 }

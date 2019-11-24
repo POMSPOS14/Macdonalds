@@ -15,4 +15,5 @@ public class ProductModel {
     private int quantity;
     private String imageUrl;
     private String category;
+    private String description;
 }

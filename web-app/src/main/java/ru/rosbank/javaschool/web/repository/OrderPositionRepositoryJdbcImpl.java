@@ -22,7 +22,8 @@ public class OrderPositionRepositoryJdbcImpl implements OrderPositionRepository 
             rs.getString("product_name"),
             rs.getInt("product_price"),
             rs.getInt("product_quantity"),
-            rs.getString("product_category")
+            rs.getString("product_category"),
+            rs.getString("product_description")
     );
 
     public OrderPositionRepositoryJdbcImpl(DataSource ds, SQLTemplate template) {
@@ -37,7 +38,8 @@ public class OrderPositionRepositoryJdbcImpl implements OrderPositionRepository 
                     "product_name TEXT NOT NULL,\n" +
                     "product_price INTEGER NOT NULL CHECK (product_price >= 0),\n" +
                     "product_quantity INTEGER NOT NULL DEFAULT 0 CHECK (product_quantity >= 0),\n" +
-                    "product_category TEXT\n" +
+                    "product_category TEXT,\n" +
+                    "product_description TEXT DEFAULT 'empty'\n" +
                     ");");
         } catch (SQLException e) {
             throw new DataAccessException(e);
@@ -47,7 +49,7 @@ public class OrderPositionRepositoryJdbcImpl implements OrderPositionRepository 
     @Override
     public List<OrderPositionModel> getAll() {
         try {
-            return template.queryForList(ds, "SELECT id, order_id, product_id, product_name, product_price, product_quantity, product_category FROM orders_positions;", mapper);
+            return template.queryForList(ds, "SELECT id, order_id, product_id, product_name, product_price, product_quantity, product_category, product_description FROM orders_positions;", mapper);
         } catch (SQLException e) {
             throw new DataAccessException(e);
         }
@@ -56,7 +58,7 @@ public class OrderPositionRepositoryJdbcImpl implements OrderPositionRepository 
     @Override
     public Optional<OrderPositionModel> getById(int id) {
         try {
-            return template.queryForObject(ds, "SELECT id, order_id, product_id, product_name, product_price, product_quantity, product_category FROM orders_positions WHERE id = ?;", stmt -> {
+            return template.queryForObject(ds, "SELECT id, order_id, product_id, product_name, product_price, product_quantity, product_category, product_description FROM orders_positions WHERE id = ?;", stmt -> {
                 stmt.setInt(1, id);
                 return stmt;
             }, mapper);
@@ -69,7 +71,7 @@ public class OrderPositionRepositoryJdbcImpl implements OrderPositionRepository 
     public void save(OrderPositionModel model) {
         try {
             if (model.getId() == 0) {
-                int id = template.<Integer>updateForId(ds, "INSERT INTO orders_positions(order_id, product_id, product_name, product_price, product_quantity, product_category) VALUES (?, ?, ?, ?, ?, ?);", stmt -> {
+                int id = template.<Integer>updateForId(ds, "INSERT INTO orders_positions(order_id, product_id, product_name, product_price, product_quantity, product_category, product_description) VALUES (?, ?, ?, ?, ?, ?, ?);", stmt -> {
                     int nextIndex = 1;
                     stmt.setInt(nextIndex++, model.getOrderId());
                     stmt.setInt(nextIndex++, model.getProductId());
@@ -77,17 +79,19 @@ public class OrderPositionRepositoryJdbcImpl implements OrderPositionRepository 
                     stmt.setInt(nextIndex++, model.getProductPrice());
                     stmt.setInt(nextIndex++, model.getProductQuantity());
                     stmt.setString(nextIndex++, model.getProductCategory());
+                    stmt.setString(nextIndex++, model.getDescription());
                     return stmt;
                 });
                 model.setId(id);
             } else {
-                template.update(ds, "UPDATE orders_positions SET order_id = ? product_id = ?, product_name = ?, product_price = ?, product_quantity = ?, product_category = ? WHERE id = ?;", stmt -> {
+                template.update(ds, "UPDATE orders_positions SET order_id = ? product_id = ?, product_name = ?, product_price = ?, product_quantity = ?, product_category = ?, product_description = ? WHERE id = ?;", stmt -> {
                     int nextIndex = 1;
                     stmt.setInt(nextIndex++, model.getOrderId());
                     stmt.setInt(nextIndex++, model.getProductId());
                     stmt.setString(nextIndex++, model.getProductName());
                     stmt.setInt(nextIndex++, model.getProductPrice());
                     stmt.setString(nextIndex++, model.getProductCategory());
+                    stmt.setString(nextIndex++, model.getDescription());
                     stmt.setInt(nextIndex++, model.getProductQuantity());
                     return stmt;
                 });
@@ -112,7 +116,7 @@ public class OrderPositionRepositoryJdbcImpl implements OrderPositionRepository 
     @Override
     public List<OrderPositionModel> getAllByOrderId(int orderId) {
         try {
-            return template.queryForList(ds, "SELECT id, order_id, product_id, product_name, product_price, product_quantity, product_category FROM orders_positions WHERE order_id = ?;", mapper, stmt -> {
+            return template.queryForList(ds, "SELECT id, order_id, product_id, product_name, product_price, product_quantity, product_category, product_description FROM orders_positions WHERE order_id = ?;", mapper, stmt -> {
                 stmt.setInt(1, orderId);
                 return stmt;
             });

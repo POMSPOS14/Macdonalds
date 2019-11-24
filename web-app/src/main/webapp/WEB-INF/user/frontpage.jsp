@@ -3,7 +3,7 @@
 <%@ page import="ru.rosbank.javaschool.web.model.ProductModel" %>
 <%@ page import="ru.rosbank.javaschool.web.model.OrderPositionModel" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%-- ! + Tab - emmet --%>
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -12,20 +12,27 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Burger Shop</title>
-    <%@include file="bootstrap-css.jsp" %>
+    <%@include file="../bootstrap-css.jsp" %>
 </head>
 <body>
-<%-- Jasper --%>
-<%-- tag + Tab --%>
-<%-- tag{Content} + Tab --%>
-<%-- tag{Content} + Tab --%>
-<%-- tag#id - уникальный идентификатор на странице --%>
-<%-- tag.class - строка, позволяющая логически группировать элементов --%>
-<%-- tag[attr=value] - все остальные атрибуты --%>
-<%-- null -> for non-existent attribute --%>
-<div class="container" style="background: rgba(140,118,255,0.35); min-height: 1000px">
-    <%-- ul>li + Tab --%>
-    <h1>Burger Shop</h1>
+<div class="container" style=" min-height: 53px;">
+    <h1 align="center">Burger Shop</h1>
+<%--    <div style="margin-left: 0px;">--%>
+<%--        <a href="<%= request.getContextPath() %>/description?id=1"--%>
+<%--           style="float: left;margin-left: 5px;"--%>
+<%--           class="btn btn-danger">Burgers</a>--%>
+<%--        <a href="<%= request.getContextPath() %>/sort?category=<%=Constants.DRINKS%>"--%>
+<%--           style="float: left;margin-left: 5px; "--%>
+<%--           class="btn btn-danger">Drinks</a>--%>
+<%--        <a href="<%= request.getContextPath() %>/sort?category=<%=Constants.DESSERTS%>"--%>
+<%--           style="float: left; margin-left: 5px;"--%>
+<%--           class="btn btn-danger">Deserts</a>--%>
+<%--        <a href="<%= request.getContextPath() %>/sort?category=<%=Constants.POTATO%>"--%>
+<%--           style="float: left; margin-left: 5px;"--%>
+<%--           class="btn btn-danger">Potato</a>--%>
+
+<%--    </div>--%>
+    <div style="min-height: 60px;"></div>
     <div class="row " style="max-width: 65%; float: left">
         <% for (ProductModel item : (List<ProductModel>) request.getAttribute(Constants.ITEMS)) { %>
         <div class="card mb-3 border border-primary" style="max-width: 340px; margin-left: 10px">
@@ -35,8 +42,11 @@
                 </div>
                 <div class="col-md-8">
                     <div class="card-body">
-                        <h5 class="card-title"><%= item.getName() %>
-                        </h5>
+<%--                        <h5 class="card-title"><%= item.getName() %>--%>
+<%--                        </h5>--%>
+                        <a href="<%= request.getContextPath() %>/description?id=<%= item.getId()%>"
+                           style="font-size: 1.5em; color: black"
+                           class=""><%= item.getName() %></a>
                         <ul class="list-group list-group-flush">
                             <li class="list-group-item">Price: <%= item.getPrice() %>
                             </li>
@@ -67,7 +77,7 @@
             <% for (OrderPositionModel model : positions) { %>
             <div>
 
-                <a href="<%= request.getContextPath() %>/edit?id=<%= model.getId()%>"
+                <a href="<%= request.getContextPath() %>/del?id=<%= model.getId()%>"
                    style="float: left; min-width: 49%; max-width: 50%; margin-top: 6px; margin-right: 1%"
                    class="btn btn-danger">Del</a>
 
@@ -81,7 +91,9 @@
                 </div>
             </div>
             <% } %>
-
+        </div>
+        <div style="min-width: 100%; font-size: 2em; font-family: 'Rage Italic';">
+            Total amount: <%=request.getAttribute("total-amount")%> rub.
         </div>
     </div>
 

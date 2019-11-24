@@ -16,4 +16,5 @@ public class OrderPositionModel {
     private int productPrice;
     private int productQuantity;
     private String productCategory;
+    private String description;
 }

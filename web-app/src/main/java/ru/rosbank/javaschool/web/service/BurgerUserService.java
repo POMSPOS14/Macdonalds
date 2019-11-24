@@ -10,6 +10,7 @@ import ru.rosbank.javaschool.web.repository.OrderRepository;
 import ru.rosbank.javaschool.web.repository.ProductRepository;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 public class BurgerUserService {
@@ -25,7 +26,7 @@ public class BurgerUserService {
         return productRepository.getById(id).orElseThrow(NotFoundException::new);
     }
 
-    // TODO: выяснить время работы сессии в Tomcat
+
     public int createOrder() {
         OrderModel model = new OrderModel(0);
         orderRepository.save(model);
@@ -41,15 +42,35 @@ public class BurgerUserService {
                 productModel.getName(),
                 productModel.getPrice(),
                 quantity,
-                productModel.getCategory()
+                productModel.getCategory(),
+                productModel.getDescription()
         );
         orderPositionRepository.save(orderPositionModel);
     }
 
-    public void delById(int id){
+    public int totalAmount() {
+        List<OrderPositionModel> all = orderPositionRepository.getAll();
+        int sum = 0;
+        for (OrderPositionModel orderPositionModel : all) {
+            sum = sum + orderPositionModel.getProductPrice() * orderPositionModel.getProductQuantity();
+        }
+        return sum;
+    }
+
+
+
+    public void delById(int id) {
         orderPositionRepository.removeById(id);
     }
+
     public List<OrderPositionModel> getAllOrderPosition(int orderId) {
         return orderPositionRepository.getAllByOrderId(orderId);
+    }
+
+    public List<OrderPositionModel> getAllOrderPositionForCategory(String category) {
+        List<OrderPositionModel> all = orderPositionRepository.getAll();
+        return all.stream()
+                .filter(o -> o.getProductCategory().toLowerCase().equals(category.toLowerCase()))
+                .collect(Collectors.toList());
     }
 }

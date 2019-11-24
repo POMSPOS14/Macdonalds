@@ -1,0 +1,1 @@
+[![Build Status](https://travis-ci.org/POMSPOS14/Macdonalds.svg?branch=master)](https://travis-ci.org/POMSPOS14/Macdonalds)

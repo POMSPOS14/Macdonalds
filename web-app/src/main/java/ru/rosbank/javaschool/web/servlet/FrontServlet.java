@@ -167,9 +167,10 @@ public class FrontServlet extends HttpServlet {
                 String name = req.getParameter("name");
                 int price = Integer.parseInt(req.getParameter("price"));
                 int quantity = Integer.parseInt(req.getParameter("quantity"));
+                String imageUrl =req.getParameter("imageUrl");
                 String category = req.getParameter("category");
                 String description = req.getParameter("description");
-                burgerAdminService.save(new ProductModel(id, name, price, quantity, null, category, description));
+                burgerAdminService.save(new ProductModel(id, name, price, quantity, imageUrl, category, description));
                 resp.sendRedirect(url);
                 return;
             }

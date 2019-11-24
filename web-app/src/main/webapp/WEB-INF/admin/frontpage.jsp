@@ -66,6 +66,10 @@
             </select>
         </div>
         <div class="form group">
+            <label for="imageUrl">Product imageUrl</label>
+            <input type="text" id="imageUrl" name="imageUrl">
+        </div>
+        <div class="form group">
             <label for="description">Product Description</label>
             <input type="text" id="description" name="description">
         </div>
@@ -98,6 +102,10 @@
                 <option value="<%=Constants.DESSERTS%>">desserts</option>
                 <option value="<%=Constants.POTATO%>">potato</option>
             </select>
+        </div>
+        <div class="form group">
+            <label for="imageUrl">Product imageUrl</label>
+            <input type="text" id="imageUrl" name="imageUrl" value="<%=item.getImageUrl()%>">
         </div>
         <div class="form group">
             <label for="description">Product Category</label>

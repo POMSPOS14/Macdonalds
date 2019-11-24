@@ -73,14 +73,14 @@
     <distributionManagement>
         <repository>
             <id>github</id>
-            <url>https://maven,pkg,github.com/POMSPOS14/Macdonalds</url>
+            <url>https://maven.pkg.github.com/POMSPOS14/Macdonalds</url>
         </repository>
     </distributionManagement>
 
     <repositories>
         <repository>
             <id>github</id>
-            <url>https://maven,pkg,github.com/POMSPOS14/Macdonalds</url>
+            <url>https://maven.pkg.github.com/POMSPOS14/Macdonalds</url>
         </repository>
     </repositories>
 
